@@ -55,7 +55,7 @@ public class DBConfig extends AbstractR2dbcConfiguration {
 
     void sometingo()
     {
-
+        System.out.println("sometingo");
     }
 
 }
