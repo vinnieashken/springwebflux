@@ -6,6 +6,7 @@ import io.r2dbc.spi.ConnectionFactoryOptions;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.r2dbc.mapping.R2dbcMappingContext;
@@ -19,15 +20,15 @@ import static io.r2dbc.spi.ConnectionFactoryOptions.*;
 public class DBConfig extends AbstractR2dbcConfiguration {
 
     @Bean
-    public ConnectionFactory connectionFactory() {
+    public ConnectionFactory connectionFactory(Environment environment) {
         return ConnectionFactories.get(ConnectionFactoryOptions
                 .builder()
-                .option(DRIVER, "mysql")
-                .option(HOST, "localhost")  // your database host
-                .option(PORT, 3306)         // your database port
-                .option(USER, "root")   // your database username
-                .option(PASSWORD, "") // your database password
-                .option(DATABASE, "springr2dbc")  // your database name
+                .option(DRIVER, environment.getProperty("spring.r2dbc.driver", "mysql"))
+                .option(HOST, environment.getProperty("spring.r2dbc.url.host", "localhost")) // Default to localhost
+                .option(PORT, Integer.parseInt(environment.getProperty("spring.r2dbc.url.port", "3306"))) // Default to 3306
+                .option(USER, environment.getProperty("spring.r2dbc.username", "root")) // Default to root
+                .option(PASSWORD, environment.getProperty("spring.r2dbc.password", "")) // Default to empty password
+                .option(DATABASE, environment.getProperty("spring.r2dbc.url.database", "springr2dbc")) // Default database
                 .build());
     }
 
@@ -53,10 +54,8 @@ public class DBConfig extends AbstractR2dbcConfiguration {
         return new R2dbcTransactionManager(connectionFactory);
     }
 
-    void sometingo()
-    {
-        //add something here
-        System.out.println("I have it");
+    @Override
+    public ConnectionFactory connectionFactory() {
+        return null;
     }
-
 }
