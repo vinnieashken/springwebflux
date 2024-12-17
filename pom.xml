@@ -29,18 +29,11 @@
 	<properties>
 		<java.version>23</java.version>
 		<sonar.host.url>http://localhost:9001</sonar.host.url>
-		<sonar.token>sqa_75d982ae0e709e3fcdc1541d0d8f615bedae8c0e</sonar.token>
-<!--		<sonar.login>admin</sonar.login>-->
-<!--		<sonar.password>Ashken12345$</sonar.password>-->
 		<sonar.projectKey>com.products:products-webflux</sonar.projectKey>
 		<sonar.projectName>Products WebFlux</sonar.projectName>
 		<sonar.projectVersion>1.0.0</sonar.projectVersion>
-<!--		<sonar.scm.provider>git</sonar.scm.provider>-->
-<!--		<sonar.login>your-sonarqube-token-here</sonar.login> -->
-		<!-- Optional: Token -->
-		<!-- JaCoCo report location for SonarQube analysis -->
-		<sonar.jacoco.reportPaths>target/jacoco.exec</sonar.jacoco.reportPaths>
-<!--		<sonar.jacoco.reportPaths>target/jacoco.exec</sonar.jacoco.reportPaths>-->
+		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.scm.provider>git</sonar.scm.provider>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -133,11 +126,23 @@
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.12</version> <!-- Use the latest version -->
 				<executions>
+					<!-- Prepare JaCoCo agent before running tests -->
 					<execution>
+						<id>prepare-agent</id>
 						<goals>
 							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<!-- Generate JaCoCo coverage report in XML format -->
+					<execution>
+						<id>report</id>
+						<phase>verify</phase>
+						<goals>
 							<goal>report</goal>
 						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -175,6 +180,25 @@
 					</execution>
 				</executions>
 
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.2.1</version> <!-- Use the latest version -->
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<files>
+								<file>src/main/resources/application.properties</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 		</plugins>

@@ -11,8 +11,13 @@ import reactor.core.publisher.Mono;
 @Service
 public class ProductService implements ProductServiceImpl {
 
-    @Autowired
+
     ProductsRepository productsRepository;
+
+    @Autowired
+    public ProductService(ProductsRepository productsRepository) {
+        this.productsRepository = productsRepository;
+    }
 
     @Override
     public Flux<Product> getProducts() {
@@ -21,8 +26,7 @@ public class ProductService implements ProductServiceImpl {
 
     @Override
     public Mono<Product> addProduct(Product product) {
-        Mono<Product> productMono = productsRepository.save(product);
-        return productMono;
+        return productsRepository.save(product);
     }
 
 }

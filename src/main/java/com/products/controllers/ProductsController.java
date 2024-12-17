@@ -12,8 +12,13 @@ import java.util.List;
 @RequestMapping("/api/products/")
 public class ProductsController {
 
-    @Autowired
+
     private ProductService productService;
+
+    @Autowired
+    public ProductsController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping("list")
     public Mono<List<Product>> getProducts() {
