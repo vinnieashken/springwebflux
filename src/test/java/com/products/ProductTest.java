@@ -1,11 +1,13 @@
 package com.products;
 import com.products.models.Product;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class ProductTest {
 
     @Test
