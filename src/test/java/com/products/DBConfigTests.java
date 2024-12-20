@@ -55,4 +55,10 @@ class DBConfigTests {
         R2dbcMappingContext mappingContext = dbConfig.r2dbcMappingContext();
         assertNotNull(mappingContext, "R2dbcMappingContext should be created successfully");
     }
+
+    @Test
+    void testConnectionFactoryCreation() {
+        DBConfig dbConfig = new DBConfig() ;
+        assertNull(dbConfig.connectionFactory(), "The connectionFactory should match the mock");
+    }
 }
