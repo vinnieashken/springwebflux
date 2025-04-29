@@ -15,9 +15,11 @@ public class SecurityConfig {
         // Disable authentication for all requests
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable) // Disable CSRF protection
-                .authorizeExchange(auth -> auth
-                        .pathMatchers("/api/products/list").permitAll() // Allow unauthenticated access
-                        .anyExchange().permitAll() // Require authentication for all other requests
+                .authorizeExchange(auth ->
+                            auth
+                                    .pathMatchers("/api/products/list").permitAll() // Allow unauthenticated access
+                                    .anyExchange().permitAll()
+                        // Require authentication for all other requests
                 )
                 .build();
     }
